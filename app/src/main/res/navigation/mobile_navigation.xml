@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.kwarta.ph.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_homebidder"
+        android:name="com.kwarta.ph.ui.homebid.HomeBidderFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home_bidder" />
+
+    <fragment
+        android:id="@+id/nav_postanitem"
+        android:name="com.kwarta.ph.ui.postanitem.PostAnItemFragment"
+        android:label="Post an Item"
+        tools:layout="@layout/fragment_postanitem" />
+
+    <fragment
+        android:id="@+id/nav_history"
+        android:name="com.kwarta.ph.ui.history.HistoryFragment"
+        android:label="History"
+        tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/nav_bidhistory"
+        android:name="com.kwarta.ph.ui.bidhistory.BidHistoryFragment"
+        android:label="History"
+        tools:layout="@layout/fragment_home_bidder" />
+
+    <fragment
+        android:id="@+id/nav_favorites"
+        android:name="com.kwarta.ph.ui.favorites.BidFavoritesFragment"
+        android:label="History"
+        tools:layout="@layout/fragment_bid_favorites" />
+    <fragment
+        android:id="@+id/nav_notifications"
+        android:name="com.kwarta.ph.ui.notifications.NotificationsFragment"
+        android:label="Notifications"
+        tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.kwarta.ph.ui.setting.SettingFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_setting" />
+
+</navigation>

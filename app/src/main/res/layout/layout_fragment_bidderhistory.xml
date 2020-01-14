@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginRight="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp"
+    android:padding="8dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="4dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
+
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+
+
+       <LinearLayout
+           android:orientation="horizontal"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:id="@+id/bidderhistory_mainLayout"
+           android:clickable="true"
+           android:focusable="true"
+           android:foreground="?android:attr/selectableItemBackground"
+           android:weightSum="1">
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               android:layout_weight="0.75"
+               android:padding="10dp">
+
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text="Auction"
+                   android:textAlignment="center"
+                   android:paddingTop="5dp"
+                   android:paddingBottom="2dp"
+                   />
+
+               <ImageView
+                   android:id="@+id/bidder_history_img"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:src="@drawable/ic_launcher_background"/>
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               android:layout_weight="0.25"
+               android:padding="10dp"
+               android:layout_gravity="center_vertical">
+               <TextView
+                   android:id="@+id/bidder_history_amountdesc"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text="Philippine One (1) Peso Bill 1967 "
+                   android:paddingTop="5dp"
+                   android:textSize="18sp"
+                   android:paddingBottom="2dp"
+                   />
+               <TextView
+                   android:id="@+id/bidder_history_amountvalue"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:textStyle="bold"
+                   android:text="P180.00"
+                   android:textSize="16sp"/>
+           </LinearLayout>
+
+       </LinearLayout>
+       <ImageView
+           android:padding="5dp"
+           android:id="@+id/bidder_status"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentEnd="true"
+           android:layout_alignParentRight="true"
+           android:layout_margin="5dp"
+           app:srcCompat="@drawable/win"
+           />
+
+   </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
