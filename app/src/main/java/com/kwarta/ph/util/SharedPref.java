@@ -25,6 +25,8 @@ public class SharedPref {
     public static final  String KEY_PACKAGEID = "packageid";
     public static final  String KEY_PAYMENTID = "paymentid";
 
+    public static final String profile = "profile";
+
 
 
     public static void saveLoginStatus(Context context, String status) {
@@ -143,6 +145,18 @@ public class SharedPref {
         return getStringPreference(context, KEY_Package);
     }
 
+    public static void saveProfile(Context context,String key) {
+
+        SharedPreferences prefs = context.getSharedPreferences(APP_ID, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(profile,key);
+        editor.apply();
+    }
+
+    public static String getProfile(Context context) {
+        return getStringPreference(context, profile);
+    }
+
     private static String getStringPreference(Context context, String key) {
         String value = "";
         SharedPreferences prefs = context.getSharedPreferences(APP_ID, Context.MODE_PRIVATE);
@@ -166,6 +180,9 @@ public class SharedPref {
         editor.apply();
 
         editor.remove(KEY_ISLOGIN);
+        editor.apply();
+
+        editor.remove(profile);
         editor.apply();
 
     }

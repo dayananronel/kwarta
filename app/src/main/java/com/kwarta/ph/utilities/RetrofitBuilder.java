@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitBuilder {
 
     //dev
-    private static final String ROOT_URL = "http://kwartaph2019.000webhostapp.com/endpoint/Api/";
+    private static final String ROOT_URL = "http://kwartaph2019.000webhostapp.com/Api/";
 
     private static Retrofit retrofit;
 
