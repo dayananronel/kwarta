@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kwarta.ph.R;
@@ -48,6 +49,7 @@ public class HomeBidderRecyclerViewAdapter extends RecyclerView.Adapter<HomeBidd
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, auctionersItemArrayList.get(i).getBidder_amount_desc(), Toast.LENGTH_SHORT).show();
+                showDialog(auctionersItemArrayList.get(i));
             }
         });
 
@@ -84,6 +86,18 @@ public class HomeBidderRecyclerViewAdapter extends RecyclerView.Adapter<HomeBidd
             subLayout = itemView.findViewById(R.id.bidder_mainlayout);
             fav = itemView.findViewById(R.id.bidder_favorites);
         }
+    }
+
+
+
+    private void showDialog(BiddersItem biddersItem){
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+        alert.setTitle("Storyboard Bidding");
+        alert.setView(R.layout.activity_bidding);
+        AlertDialog alertDialog = alert.create();
+        alertDialog.show();
+
     }
 
 }

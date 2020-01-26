@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kwarta.ph">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,9 +15,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".PostAnItemActivity"
-            android:label="Post an Item"></activity>
+        <activity android:name=".ui.bidders.BiddersActivity"></activity>
+        <activity
+            android:name=".PostAnItemActivity"
+            android:label="Post an Item" />
         <activity
             android:name=".MenuActivity"
             android:label="@string/title_activity_menu"
