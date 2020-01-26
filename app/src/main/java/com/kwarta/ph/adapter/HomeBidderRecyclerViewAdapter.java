@@ -1,5 +1,6 @@
 package com.kwarta.ph.adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.ActionProvider;
 import android.view.LayoutInflater;
@@ -41,6 +42,8 @@ public class HomeBidderRecyclerViewAdapter extends RecyclerView.Adapter<HomeBidd
     private Context mContext;
 
     String userid;
+
+    ProgressDialog progressDialog;
 
     public HomeBidderRecyclerViewAdapter(Context mContext, ArrayList<BiddersItem> mPlaceName) {
         this.biddersItemArrayList = mPlaceName;
@@ -151,31 +154,44 @@ public class HomeBidderRecyclerViewAdapter extends RecyclerView.Adapter<HomeBidd
 
                     if (CommonFunctions.getConnectivityStatus(mContext) > 0){
 
-                        Api api = RetrofitBuilder.getClient().create(Api.class);
-                        Call<GenericResponse> responseCall = api.biditem(userid,biddersItem.getId(),et_bid.getText().toString());
-                        responseCall.enqueue(new Callback<GenericResponse>() {
-                            @Override
-                            public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                                if(response.errorBody() == null){
-                                    if(response.body().getStatus().equals("000")){
+                        if(Double.parseDouble(et_bid.getText().toString()) >= Double.parseDouble(biddersItem.getMin_bid())){
 
-                                        Toast.makeText(mContext,"Successfully Bid.",Toast.LENGTH_SHORT).show();
-                                        alertDialog.dismiss();
+                            progressDialog = new ProgressDialog(mContext);
+                            progressDialog.setCancelable(false);
+                            progressDialog.setMessage("Placing your bid.. please wait.");
+                            progressDialog.show();
 
+
+                            Api api = RetrofitBuilder.getClient().create(Api.class);
+                            Call<GenericResponse> responseCall = api.biditem(userid,biddersItem.getId(),et_bid.getText().toString());
+                            responseCall.enqueue(new Callback<GenericResponse>() {
+                                @Override
+                                public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                                    progressDialog.dismiss();
+                                    if(response.errorBody() == null){
+                                        if(response.body().getStatus().equals("000")){
+
+                                            Toast.makeText(mContext,"Successfully Bid.",Toast.LENGTH_SHORT).show();
+                                            alertDialog.dismiss();
+
+                                        }else{
+                                            Toast.makeText(mContext,response.body().getMessage(),Toast.LENGTH_SHORT).show();
+                                        }
                                     }else{
-                                        Toast.makeText(mContext,response.body().getMessage(),Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext,"Something went wrong. Please try again.",Toast.LENGTH_SHORT).show();
                                     }
-                                }else{
+                                }
+
+                                @Override
+                                public void onFailure(Call<GenericResponse> call, Throwable t) {
+                                    progressDialog.dismiss();
+                                    t.printStackTrace();
                                     Toast.makeText(mContext,"Something went wrong. Please try again.",Toast.LENGTH_SHORT).show();
                                 }
-                            }
-
-                            @Override
-                            public void onFailure(Call<GenericResponse> call, Throwable t) {
-                                t.printStackTrace();
-                                Toast.makeText(mContext,"Something went wrong. Please try again.",Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                            });
+                        }else{
+                            et_bid.setError("Please enter higher or equal to bid amount.");
+                        }
 
                     }else {
                         Toast.makeText(mContext,"No internet connection.",Toast.LENGTH_SHORT).show();
