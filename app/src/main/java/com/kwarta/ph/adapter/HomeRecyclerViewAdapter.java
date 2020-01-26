@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.kwarta.ph.R;
 import com.kwarta.ph.model.AuctionersItem;
 
@@ -38,15 +39,22 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
 
-        viewHolder.desc.setText(auctionersItemArrayList.get(i).getAuctioneer_amount_desc());
-        viewHolder.amount.setText(auctionersItemArrayList.get(i).getAuctioneer_amount_value());
-        viewHolder.bids.setText(auctionersItemArrayList.get(i).getAuctioneer_amount_bids());
-        viewHolder.duration.setText(auctionersItemArrayList.get(i).getAuctioneer_amount_duration());
+
+        Glide.with(mContext)
+                .load(auctionersItemArrayList.get(i).getImage())
+                .override(100,100)
+                .centerCrop()
+                .into(viewHolder.img);
+
+        viewHolder.desc.setText(auctionersItemArrayList.get(i).getName());
+        viewHolder.amount.setText(auctionersItemArrayList.get(i).getMin_bid());
+        viewHolder.bids.setText(auctionersItemArrayList.get(i).getNumber_bid());
+        viewHolder.duration.setText(auctionersItemArrayList.get(i).getDuration()+" days");
 
         viewHolder.subLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, auctionersItemArrayList.get(i).getAuctioneer_amount_desc(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, auctionersItemArrayList.get(i).getName(), Toast.LENGTH_SHORT).show();
             }
         });
     }

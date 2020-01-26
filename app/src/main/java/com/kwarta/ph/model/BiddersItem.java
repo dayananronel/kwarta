@@ -1,6 +1,75 @@
 package com.kwarta.ph.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class BiddersItem {
+
+
+    @SerializedName("id")
+    @Expose
+    String id;
+
+    @SerializedName("name")
+    @Expose
+    String name;
+
+    @SerializedName("description")
+    @Expose
+    String description;
+
+    @SerializedName("min_bid")
+    @Expose
+    String min_bid;
+
+    @SerializedName("number_bid")
+    @Expose
+    String number_bid;
+
+    @SerializedName("duration")
+    @Expose
+    String duration;
+
+    @SerializedName("auctioner_id")
+    @Expose
+    String auctioner_id;
+
+    @SerializedName("image")
+    @Expose
+    String image;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getMin_bid() {
+        return min_bid;
+    }
+
+    public String getNumber_bid() {
+        return number_bid;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public String getAuctioner_id() {
+        return auctioner_id;
+    }
+
+    public String getImage() {
+        return image;
+    }
 
     private String bidder_image;
     private String bidder_amount_desc;

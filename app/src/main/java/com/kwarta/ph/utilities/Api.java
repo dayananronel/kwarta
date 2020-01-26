@@ -14,11 +14,16 @@ public interface Api {
     );
 
     @FormUrlEncoded
-    @POST("register")
-    Call<GenericResponse> register(@Field("usertypeid") String usertypeid,
-                                   @Field("emailaddress") String emailaddress,
-                                   @Field("mobilenumber") String mobilenumber,
-                                   @Field("password") String password,
-                                   @Field("ipaddress")String ipaddress
+    @POST("showauction")
+    Call<GenericResponse> showauction(@Field("status") String status
     );
+
+    @FormUrlEncoded
+    @POST("biditem")
+    Call<GenericResponse> biditem(@Field("id") String id,
+                                  @Field("item_id") String item_id,
+                                  @Field("amount_bid") String amount_bid
+    );
+
+
 }
