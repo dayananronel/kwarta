@@ -24,6 +24,26 @@ public interface Api {
                                   @Field("item_id") String item_id,
                                   @Field("amount_bid") String amount_bid
     );
+    @FormUrlEncoded
+    @POST("register")
+    Call<GenericResponse> register(@Field("fname") String fname,
+                                   @Field("lname") String lname,
+                                   @Field("email") String email,
+                                   @Field("username") String username,
+                                   @Field("password") String password,
+                                   @Field("user_type") String user_type
+
+    );
+
+    @FormUrlEncoded
+    @POST("addauction")
+    Call<GenericResponse> addauction(@Field("name") String id,
+                                     @Field("image") String item_id,
+                                     @Field("description") String amount_bid,
+                                     @Field("min_bid") String min_bid,
+                                     @Field("duration") String duration,
+                                     @Field("auctioner_id") String auctioner_id
+    );
 
 
 }

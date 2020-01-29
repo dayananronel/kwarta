@@ -6,15 +6,12 @@ import com.google.gson.annotations.SerializedName;
 public class GenericResponse {
 
     @SerializedName("data")
-    @Expose
     String data;
 
     @SerializedName("status")
-    @Expose
     String status;
 
     @SerializedName("message")
-    @Expose
     String message;
 
 

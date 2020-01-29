@@ -9,41 +9,42 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp"
-        android:padding="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:padding="10dp">
 
-
-           <LinearLayout
-               android:id="@+id/register_auctioneer"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:orientation="vertical"
-               android:gravity="center"
-               android:layout_weight="1">
-
-               <TextView
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:textAlignment="center"
-                   android:text="Auctioneer"/>
-
-               <ImageView
-                   android:layout_width="150dp"
-                   android:layout_height="150dp"
-                   android:src="@mipmap/ic_launcher_round"/>
-
-               <RadioButton
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   />
-
-           </LinearLayout>
             <LinearLayout
-                android:id="@+id/register_bidder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Auctioneer"
+                    android:gravity="center_horizontal" />
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/auctioneer"/>
+
+                <RadioButton
+                    android:id="@+id/radio_auctioneer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -53,20 +54,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:text="Bidder"/>
+                    android:text="Bidder"
+                    android:layout_gravity="center_horizontal" />
 
                 <ImageView
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:src="@mipmap/ic_launcher_round"/>
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/bidder"/>
 
                 <RadioButton
+                    android:id="@+id/radio_bidder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="false"
                     />
             </LinearLayout>
 
-    </LinearLayout>
+        </LinearLayout>
 
     <Button
         android:id="@+id/btn_chooseAccount"
