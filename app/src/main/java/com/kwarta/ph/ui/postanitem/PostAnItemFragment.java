@@ -111,7 +111,7 @@ public class PostAnItemFragment extends Fragment implements View.OnClickListener
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-                                dates = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                                dates = ""+dayOfMonth ;
                                 selectdate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                             }
                         }, mYear, mMonth, mDay);
