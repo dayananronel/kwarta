@@ -1,6 +1,7 @@
 package com.kwarta.ph.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.kwarta.ph.R;
 import com.kwarta.ph.model.AuctionersItem;
+import com.kwarta.ph.ui.bidders.BiddersActivity;
 
 import java.util.ArrayList;
 
@@ -55,6 +57,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, auctionersItemArrayList.get(i).getName(), Toast.LENGTH_SHORT).show();
+                mContext.startActivity(new Intent(mContext, BiddersActivity.class));
             }
         });
     }
