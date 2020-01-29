@@ -38,10 +38,21 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        if(SharedPref.getLoginStatus(getApplicationContext()).equals("true")){
+            LoginResponse response1 = new Gson().fromJson(SharedPref.getProfile(getApplicationContext()),LoginResponse.class);
+            if(response1.getUser_type().equals("1")){
+                startActivity(new Intent(getApplicationContext(), MenuActivity.class));
+                SharedPref.saveUserType(getApplicationContext(), "auctioneer");
+            }else if(response1.getUser_type().equals("2")){
+                startActivity(new Intent(getApplicationContext(), MenuActivity.class));
+                SharedPref.saveUserType(getApplicationContext(), "bidder");
+            }
+        }else{
+            setContentView(R.layout.activity_sign_in);
+            init();
+            listener();
+        }
 
-        init();
-        listener();
     }
 
     private void init() {
@@ -86,6 +97,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
                                       LoginResponse response1 = new Gson().fromJson(response.body().getData(),LoginResponse.class);
                                       SharedPref.saveProfile(getApplicationContext(),response.body().getData());
+                                      SharedPref.saveLoginStatus(getApplicationContext(),"true");
                                       if(response1.getUser_type().equals("1")){
                                           startActivity(new Intent(getApplicationContext(), MenuActivity.class));
                                           SharedPref.saveUserType(getApplicationContext(), "auctioneer");

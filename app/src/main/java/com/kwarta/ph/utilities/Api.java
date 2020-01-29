@@ -37,9 +37,9 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("addauction")
-    Call<GenericResponse> addauction(@Field("name") String id,
-                                     @Field("image") String item_id,
-                                     @Field("description") String amount_bid,
+    Call<GenericResponse> addauction(@Field("name") String name,
+                                     @Field("image") String image,
+                                     @Field("description") String description,
                                      @Field("min_bid") String min_bid,
                                      @Field("duration") String duration,
                                      @Field("auctioner_id") String auctioner_id
