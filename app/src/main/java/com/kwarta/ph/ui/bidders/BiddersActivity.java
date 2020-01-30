@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.kwarta.ph.R;
 import com.kwarta.ph.adapter.BiddersRecyclerViewAdapter;
@@ -20,9 +21,10 @@ import com.kwarta.ph.model.BiddersDataList;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class BiddersActivity extends AppCompatActivity {
+public class BiddersActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     ArrayList<BiddersDataList> arrayList = new ArrayList<>();
 
@@ -34,6 +36,8 @@ public class BiddersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bidders);
 
         recyclerView = findViewById(R.id.bidderrecyclerview);
+        swipeRefreshLayout = findViewById(R.id.biddersswiperefresh);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -81,5 +85,10 @@ public class BiddersActivity extends AppCompatActivity {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(packageListRecyclerViewAdapter);
 
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 }
