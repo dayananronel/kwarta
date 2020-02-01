@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -23,6 +24,7 @@ import com.kwarta.ph.adapter.HomeBidderRecyclerViewAdapter;
 import com.kwarta.ph.adapter.HomeRecyclerViewAdapter;
 import com.kwarta.ph.model.BiddersItem;
 import com.kwarta.ph.ui.home.HomeViewModel;
+import com.kwarta.ph.util.Validator;
 import com.kwarta.ph.utilities.Api;
 import com.kwarta.ph.utilities.GenericResponse;
 import com.kwarta.ph.utilities.RetrofitBuilder;
@@ -43,6 +45,9 @@ public class HomeBidderFragment extends Fragment implements SwipeRefreshLayout.O
     private HomeViewModel homeViewModel;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swiperefreshbidder;
+    private RelativeLayout emptyLayout;
+    private RelativeLayout nointernetlayout;
+    private Validator validator;
 
     private HomeRecyclerViewAdapter homeRecyclerViewAdapter;
 
@@ -57,6 +62,8 @@ public class HomeBidderFragment extends Fragment implements SwipeRefreshLayout.O
         arrayList = new ArrayList<>();
         recyclerView = root.findViewById(R.id.home_bidderrecyclerview);
         swiperefreshbidder = root.findViewById(R.id.swiperefreshbidder);
+        nointernetlayout = root.findViewById(R.id.nointernetlayout);
+        emptyLayout = root.findViewById(R.id.emptyLayout);
         swiperefreshbidder.setOnRefreshListener(this);
 
         return root;
@@ -72,40 +79,48 @@ public class HomeBidderFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     private void getItems(){
+        if (validator.getConnectivityStatus(getContext())> 0){
+            Api api = RetrofitBuilder.getClient().create(Api.class);
+            Call<GenericResponse> call = api.showauction("1");
+            call.enqueue(new Callback<GenericResponse>() {
+                @Override
+                public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                    swiperefreshbidder.setRefreshing(false);
+                    if(response.errorBody() == null){
+                        if(response.body().getStatus().equals("000")){
 
-        Api api = RetrofitBuilder.getClient().create(Api.class);
-        Call<GenericResponse> call = api.showauction("1");
-        call.enqueue(new Callback<GenericResponse>() {
-            @Override
-            public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
-                swiperefreshbidder.setRefreshing(false);
-                if(response.errorBody() == null){
-                    if(response.body().getStatus().equals("000")){
+                            arrayList = new Gson().fromJson(response.body().getData(),
+                                    new TypeToken<List<BiddersItem>>(){}.getType());
 
-                        arrayList = new Gson().fromJson(response.body().getData(),
-                                new TypeToken<List<BiddersItem>>(){}.getType());
+                            if(arrayList.size() > 0){
+                                showHasData();
+                                initRecyclerView();
+                            }else{
+                                showNoData();
+                            }
 
-                        if(arrayList.size() > 0){
-                            initRecyclerView();
                         }else{
-                            Toast.makeText(getContext(),"No Items to display.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),"Error on request: "+response.body().getMessage(),Toast.LENGTH_SHORT).show();
+                            showNoData();
                         }
-
                     }else{
-
+                        showNoData();
+                        Toast.makeText(getContext(),"Something went wrong.Please try again.",Toast.LENGTH_SHORT).show();
                     }
-                }else{
+                }
+
+                @Override
+                public void onFailure(Call<GenericResponse> call, Throwable t) {
+                    swiperefreshbidder.setRefreshing(false);
+                    showNoInternet();
+                    t.printStackTrace();
                     Toast.makeText(getContext(),"Something went wrong.Please try again.",Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            @Override
-            public void onFailure(Call<GenericResponse> call, Throwable t) {
-                swiperefreshbidder.setRefreshing(false);
-                t.printStackTrace();
-                Toast.makeText(getContext(),"Something went wrong.Please try again.",Toast.LENGTH_SHORT).show();
-            }
-        });
+            });
+        }else{
+            swiperefreshbidder.setRefreshing(false);
+            showNoInternet();
+        }
     }
 
     private void initRecyclerView(){
@@ -118,7 +133,32 @@ public class HomeBidderFragment extends Fragment implements SwipeRefreshLayout.O
 
     @Override
     public void onRefresh() {
+        arrayList.clear();
         swiperefreshbidder.setRefreshing(true);
+        hideAllLayout();
         getItems();
     }
+
+    public void hideAllLayout(){
+        recyclerView.setVisibility(View.GONE);
+        emptyLayout.setVisibility(View.GONE);
+        nointernetlayout.setVisibility(View.GONE);
+    }
+
+    public void showHasData(){
+        recyclerView.setVisibility(View.VISIBLE);
+        emptyLayout.setVisibility(View.GONE);
+        nointernetlayout.setVisibility(View.GONE);
+    }
+    public void showNoInternet(){
+        recyclerView.setVisibility(View.GONE);
+        emptyLayout.setVisibility(View.GONE);
+        nointernetlayout.setVisibility(View.VISIBLE);
+    }
+    public void showNoData(){
+        recyclerView.setVisibility(View.GONE);
+        emptyLayout.setVisibility(View.VISIBLE);
+        nointernetlayout.setVisibility(View.GONE);
+    }
+
 }

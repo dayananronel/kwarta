@@ -45,5 +45,8 @@ public interface Api {
                                      @Field("auctioner_id") String auctioner_id
     );
 
-
+    @FormUrlEncoded
+    @POST("showbidder")
+    Call<GenericResponse> showbidder(@Field("item_id") String status
+    );
 }

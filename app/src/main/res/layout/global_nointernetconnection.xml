@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/nointernetlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone">
+
+    <ImageView
+        android:id="@+id/nodatapulldown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/pulldown"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Swipe down to refresh."
+        android:layout_centerInParent="true"
+        android:layout_below="@id/nodatapulldown"
+        android:gravity="center"/>
+
+    <ImageView
+        android:id="@+id/nodataimage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/nointernet"
+        android:layout_centerInParent="true"
+        android:scaleType="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No network available."
+        android:layout_centerInParent="true"
+        android:layout_below="@id/nodataimage"
+        android:gravity="center"/>
+
+
+</RelativeLayout>

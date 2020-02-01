@@ -54,6 +54,7 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="5dp"
                     android:paddingBottom="2dp"
+                    android:visibility="gone"
                     android:text="03-02-20 at 12:15 AM" />
             </LinearLayout>
 

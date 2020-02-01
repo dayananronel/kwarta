@@ -43,13 +43,12 @@ public class BiddersRecyclerViewAdapter extends RecyclerView.Adapter<BiddersRecy
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
 
-        viewHolder.name.setText(biddersDataLists.get(i).getBiddername());
-        viewHolder.amount.setText(biddersDataLists.get(i).getAmount());
-        viewHolder.biddertime.setText(biddersDataLists.get(i).getBiddertime());
+        viewHolder.name.setText(biddersDataLists.get(i).getFname()+" "+ biddersDataLists.get(i).getLname());
+        viewHolder.amount.setText(biddersDataLists.get(i).getAmount_bid());
         viewHolder.subLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, biddersDataLists.get(i).getBiddername(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, biddersDataLists.get(i).getName(), Toast.LENGTH_SHORT).show();
             }
         });
     }
