@@ -115,6 +115,23 @@
 
 
 
+       <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+           android:layout_width="match_parent"
+           android:id="@+id/swiperefreshfeedback"
+           android:layout_height="match_parent">
+
+           <androidx.recyclerview.widget.RecyclerView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:id="@+id/profilefeedbackrecyclerview"/>
+
+           <include layout="@layout/global_emtpy_layout"/>
+           <include layout="@layout/global_nointernetconnection"/>
+
+
+       </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
 
 </LinearLayout>

@@ -4,29 +4,31 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.kwarta.ph.R;
 import com.kwarta.ph.adapter.HistoryRecyclerViewAdapter;
-import com.kwarta.ph.adapter.HomeRecyclerViewAdapter;
 import com.kwarta.ph.model.AuctionersItem;
 import com.kwarta.ph.ui.home.HomeViewModel;
+import com.kwarta.ph.util.Validator;
 
 import java.util.ArrayList;
 
-public class HistoryFragment extends Fragment {
+public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private HomeViewModel homeViewModel;
     private RecyclerView recyclerView;
-
+    private RelativeLayout emptyLayout;
+    private RelativeLayout nointernetlayout;
     private HistoryRecyclerViewAdapter historyRecyclerViewAdapter;
+    private SwipeRefreshLayout swiperfreshhistory;
 
     ArrayList<AuctionersItem> arrayList = new ArrayList<>();
     View root;
@@ -37,6 +39,11 @@ public class HistoryFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_history, container, false);
 
         recyclerView = root.findViewById(R.id.history_recyclerview);
+        emptyLayout = root.findViewById(R.id.emptyLayout);
+        nointernetlayout = root.findViewById(R.id.nointernetlayout);
+        swiperfreshhistory = root.findViewById(R.id.swiperfreshhistory);
+        swiperfreshhistory.setOnRefreshListener(this);
+        swiperfreshhistory.setRefreshing(true);
         return root;
     }
 
@@ -50,6 +57,9 @@ public class HistoryFragment extends Fragment {
     }
 
     private void initImageBitmaps() {
+
+        swiperfreshhistory.setRefreshing(false);
+        showHasData();
 
         AuctionersItem item = new AuctionersItem();
         item.setAuctioneer_amount_desc("two hundred");
@@ -68,7 +78,12 @@ public class HistoryFragment extends Fragment {
         arrayList.add(item);
         arrayList.add(item1);
         arrayList.add(item2);
-        initRecyclerView();
+
+        if(Validator.getConnectivityStatus(getContext()) > 0){
+            initRecyclerView();
+        }else {
+            showNoInternet();
+        }
 
     }
     private void initRecyclerView(){
@@ -76,6 +91,37 @@ public class HistoryFragment extends Fragment {
                 new HistoryRecyclerViewAdapter(getContext(),arrayList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(packageListRecyclerViewAdapter);
+
+    }
+
+    public void hideAllLayout(){
+        recyclerView.setVisibility(View.GONE);
+        emptyLayout.setVisibility(View.GONE);
+        nointernetlayout.setVisibility(View.GONE);
+    }
+
+    public void showHasData(){
+        recyclerView.setVisibility(View.VISIBLE);
+        emptyLayout.setVisibility(View.GONE);
+        nointernetlayout.setVisibility(View.GONE);
+    }
+    public void showNoInternet(){
+        recyclerView.setVisibility(View.GONE);
+        emptyLayout.setVisibility(View.GONE);
+        nointernetlayout.setVisibility(View.VISIBLE);
+    }
+    public void showNoData(){
+        recyclerView.setVisibility(View.GONE);
+        emptyLayout.setVisibility(View.VISIBLE);
+        nointernetlayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onRefresh() {
+        swiperfreshhistory.setRefreshing(true);
+        arrayList.clear();
+        hideAllLayout();
+        initImageBitmaps();
 
     }
 }
