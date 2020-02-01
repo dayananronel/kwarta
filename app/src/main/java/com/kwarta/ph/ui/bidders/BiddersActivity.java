@@ -133,7 +133,7 @@ public class BiddersActivity extends AppCompatActivity implements SwipeRefreshLa
 
     private void initRecyclerView(){
         BiddersRecyclerViewAdapter packageListRecyclerViewAdapter =
-                new BiddersRecyclerViewAdapter(getApplicationContext(),arrayList);
+                new BiddersRecyclerViewAdapter(BiddersActivity.this,arrayList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(packageListRecyclerViewAdapter);

@@ -1,6 +1,7 @@
 package com.kwarta.ph.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +16,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.kwarta.ph.R;
 import com.kwarta.ph.model.BiddersDataList;
 import com.kwarta.ph.model.BiddersItem;
+import com.kwarta.ph.ui.showprofile.ProfileActivity;
 
 import java.util.ArrayList;
 
@@ -48,7 +51,10 @@ public class BiddersRecyclerViewAdapter extends RecyclerView.Adapter<BiddersRecy
         viewHolder.subLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, biddersDataLists.get(i).getName(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext,ProfileActivity.class);
+                intent.putExtra("profile",new Gson().toJson(biddersDataLists.get(i)));
+                mContext.startActivity(intent);
+
             }
         });
     }

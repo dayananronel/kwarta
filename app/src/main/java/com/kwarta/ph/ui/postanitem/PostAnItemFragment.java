@@ -34,6 +34,7 @@ import com.kwarta.ph.R;
 import com.kwarta.ph.SignInActivity;
 import com.kwarta.ph.model.LoginResponse;
 import com.kwarta.ph.util.SharedPref;
+import com.kwarta.ph.util.Validator;
 import com.kwarta.ph.utilities.Api;
 import com.kwarta.ph.utilities.GenericResponse;
 import com.kwarta.ph.utilities.RetrofitBuilder;
@@ -43,6 +44,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -121,6 +123,9 @@ public class PostAnItemFragment extends Fragment implements View.OnClickListener
 
             case R.id.submitbtn:
 
+                if(Validator.getConnectivityStatus(Objects.requireNonNull(getContext())) <=0 )  {
+                    Toast.makeText(getContext(),"No internet connection.",Toast.LENGTH_SHORT).show();
+                }else {
                     if(dates.isEmpty() || et_name.getText().toString().isEmpty()|| et_desc.getText().toString().isEmpty() || et_amount.getText().toString().isEmpty() ){
                         Toast.makeText(getContext(),"All fields are mandatory.",Toast.LENGTH_SHORT).show();
                     }else{
@@ -167,6 +172,8 @@ public class PostAnItemFragment extends Fragment implements View.OnClickListener
                         });
 
                     }
+                }
+
                 break;
 
         }

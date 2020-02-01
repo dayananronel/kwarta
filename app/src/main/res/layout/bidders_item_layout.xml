@@ -20,15 +20,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/bidders_mainLayout"
-        android:foreground="?android:attr/selectableItemBackground">
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+       >
 
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
             android:weightSum="1">
 
             <LinearLayout
