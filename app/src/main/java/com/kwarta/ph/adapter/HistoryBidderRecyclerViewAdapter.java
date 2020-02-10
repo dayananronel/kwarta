@@ -14,20 +14,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.kwarta.ph.R;
-import com.kwarta.ph.model.AuctionersItem;
-import com.kwarta.ph.model.BiddersItem;
+import com.kwarta.ph.model.HistoryResponse;
+import com.kwarta.ph.util.SharedPref;
 
 import java.util.ArrayList;
 
 public class HistoryBidderRecyclerViewAdapter extends RecyclerView.Adapter<HistoryBidderRecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<BiddersItem> auctionersItemArrayList
+    private ArrayList<HistoryResponse> historyResponses
             ;
     private Context mContext;
 
-    public HistoryBidderRecyclerViewAdapter(Context mContext, ArrayList<BiddersItem> mPlaceName) {
-        this.auctionersItemArrayList = mPlaceName;
+    public HistoryBidderRecyclerViewAdapter(Context mContext, ArrayList<HistoryResponse> mPlaceName) {
+        this.historyResponses = mPlaceName;
         this.mContext = mContext;
     }
 
@@ -42,10 +43,15 @@ public class HistoryBidderRecyclerViewAdapter extends RecyclerView.Adapter<Histo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
 
-        viewHolder.desc.setText(auctionersItemArrayList.get(i).getBidder_amount_desc());
-        viewHolder.amount.setText(auctionersItemArrayList.get(i).getBidder_amount_value());
+        viewHolder.desc.setText(historyResponses.get(i).getItemname());
+        viewHolder.amount.setText(historyResponses.get(i).getAmount_bid());
 
-        if(auctionersItemArrayList.get(i).getBidder_history_status().equals("won")){
+        Glide.with(mContext)
+                .load(historyResponses.get(i).getImage())
+                .override(100,100)
+                .into(viewHolder.img);
+
+        if(historyResponses.get(i).getBidder_win_id().equals(SharedPref.getID(mContext))){
             viewHolder.stat.setImageDrawable(mContext.getDrawable(R.drawable.win));
         }else{
             viewHolder.stat.setImageDrawable(mContext.getDrawable(R.drawable.loss));
@@ -54,14 +60,14 @@ public class HistoryBidderRecyclerViewAdapter extends RecyclerView.Adapter<Histo
         viewHolder.stat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, auctionersItemArrayList.get(i).getBidder_amount_desc(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, historyResponses.get(i).getBidder_amount_desc(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return auctionersItemArrayList.size();
+        return historyResponses.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{

@@ -53,7 +53,6 @@ public class BiddersDataList {
     @Expose
     String lname;
 
-
     public String getFname() {
         return fname;
     }

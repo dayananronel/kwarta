@@ -12,19 +12,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.kwarta.ph.R;
 import com.kwarta.ph.model.AuctionersItem;
+import com.kwarta.ph.model.HistoryResponse;
 
 import java.util.ArrayList;
 
 public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<AuctionersItem> auctionersItemArrayList
+    private ArrayList<HistoryResponse> historyResponseArrayList
             ;
     private Context mContext;
 
-    public HistoryRecyclerViewAdapter(Context mContext, ArrayList<AuctionersItem> mPlaceName) {
-        this.auctionersItemArrayList = mPlaceName;
+    public HistoryRecyclerViewAdapter(Context mContext, ArrayList<HistoryResponse> historyResponses) {
+        this.historyResponseArrayList = historyResponses;
         this.mContext = mContext;
     }
 
@@ -38,20 +40,25 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
 
-        viewHolder.desc.setText(auctionersItemArrayList.get(i).getAuctioneer_amount_desc());
-        viewHolder.status.setText(auctionersItemArrayList.get(i).getAuctioneer_history_status());
+        viewHolder.desc.setText(historyResponseArrayList.get(i).getItemname());
+        viewHolder.status.setText("Winner : "+historyResponseArrayList.get(i).getFname() +" "+historyResponseArrayList.get(i).getLname());
+
+        Glide.with(mContext)
+                .load(historyResponseArrayList.get(i).getImage())
+                .override(100,100)
+                .into(viewHolder.img);
 
         viewHolder.subLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, auctionersItemArrayList.get(i).getAuctioneer_amount_desc(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, historyResponseArrayList.get(i).getAuctioneer_amount_desc(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return auctionersItemArrayList.size();
+        return historyResponseArrayList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -66,7 +73,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
             super(itemView);
             img = itemView.findViewById(R.id.auctioneerhistory_img);
             desc = itemView.findViewById(R.id.auc_history_amountdesc);
-            status = itemView.findViewById(R.id.auc_history_status);
+            status = itemView.findViewById(R.id.auc_history_winner);
             subLayout = itemView.findViewById(R.id.auctioneerhistory_mainlayout);
         }
     }

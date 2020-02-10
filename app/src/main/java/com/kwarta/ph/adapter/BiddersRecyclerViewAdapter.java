@@ -26,8 +26,7 @@ import java.util.ArrayList;
 
 public class BiddersRecyclerViewAdapter extends RecyclerView.Adapter<BiddersRecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<BiddersDataList> biddersDataLists
-            ;
+    private ArrayList<BiddersDataList> biddersDataLists;
     private Context mContext;
 
     public BiddersRecyclerViewAdapter(Context mContext, ArrayList<BiddersDataList> mPlaceName) {
@@ -37,7 +36,7 @@ public class BiddersRecyclerViewAdapter extends RecyclerView.Adapter<BiddersRecy
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public  ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.bidders_item_layout,viewGroup,false);
         return new ViewHolder(view);
     }
@@ -54,7 +53,6 @@ public class BiddersRecyclerViewAdapter extends RecyclerView.Adapter<BiddersRecy
                 Intent intent = new Intent(mContext,ProfileActivity.class);
                 intent.putExtra("profile",new Gson().toJson(biddersDataLists.get(i)));
                 mContext.startActivity(intent);
-
             }
         });
     }

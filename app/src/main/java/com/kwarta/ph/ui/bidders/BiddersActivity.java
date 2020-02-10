@@ -1,12 +1,12 @@
 package com.kwarta.ph.ui.bidders;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -18,18 +18,28 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
+import com.github.javiersantos.materialstyleddialogs.enums.Style;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kwarta.ph.R;
 import com.kwarta.ph.adapter.BiddersRecyclerViewAdapter;
 import com.kwarta.ph.model.AuctionersItem;
 import com.kwarta.ph.model.BiddersDataList;
+import com.kwarta.ph.model.HistoryResponse;
 import com.kwarta.ph.util.Validator;
 import com.kwarta.ph.utilities.Api;
+import com.kwarta.ph.utilities.DateValidator;
 import com.kwarta.ph.utilities.GenericResponse;
 import com.kwarta.ph.utilities.RetrofitBuilder;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,6 +58,9 @@ public class BiddersActivity extends AppCompatActivity implements SwipeRefreshLa
     ArrayList<BiddersDataList> arrayList = new ArrayList<>();
 
     AuctionersItem item;
+    private int mYear;
+    private int mMonth;
+    private int mDay;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint("RestrictedApi")
@@ -70,7 +83,26 @@ public class BiddersActivity extends AppCompatActivity implements SwipeRefreshLa
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Bidders for "+item.getName());
 
-        getItems();
+
+        DateFormat df = new SimpleDateFormat("MM-dd-yyyy");
+        Date dateobj = new Date();
+
+        Log.d("okhttp","DATE : "+df.format(dateobj));
+
+
+        // Get Current Date
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+        if(!new DateValidator().compareDates(item.getDuration(),(mMonth + 1) +"-"+mDay+"-"+mYear)){
+            getWinners();
+        }else{
+            getItems();
+        }
+
     }
 
     @Override
@@ -168,4 +200,69 @@ public class BiddersActivity extends AppCompatActivity implements SwipeRefreshLa
         emptyLayout.setVisibility(View.VISIBLE);
         nointernetlayout.setVisibility(View.GONE);
     }
+
+    private void getWinners(){
+
+        if(validator.getConnectivityStatus(getApplicationContext())> 0){
+            Api api = RetrofitBuilder.getClient().create(Api.class);
+            Call<GenericResponse> call = api.showauctionhistory("0");
+            call.enqueue(new Callback<GenericResponse>() {
+                @Override
+                public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                    swipeRefreshLayout.setRefreshing(false);
+                    if(response.errorBody() == null){
+                        if(response.body().getStatus().equals("000")){
+
+                            Log.d("okhttp","DATA : :: "+response.body().getData());
+                            ArrayList<HistoryResponse> historyResponses = new ArrayList<>();
+                            historyResponses = new Gson().fromJson(response.body().getData(),
+                                    new TypeToken<List<HistoryResponse>>(){}.getType());
+
+                            if(historyResponses.size() > 0){
+
+
+                                new MaterialStyledDialog.Builder(BiddersActivity.this)
+                                        .setTitle("Congratulations to the Winner of "+historyResponses.get(0).getItemname())
+                                        .setDescription(""+historyResponses.get(0).getFname()+" "+ historyResponses.get(0).getLname())
+                                        .setStyle(Style.HEADER_WITH_TITLE)
+                                        .setPositiveText("Close")
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                finish();
+                                            }
+                                        })
+                                        .show();
+
+
+
+                            }else{
+                                showNoData();
+                                Toast.makeText(getApplicationContext(),"No winners at this time.",Toast.LENGTH_SHORT).show();
+                            }
+
+                        }else{
+                            showNoData();
+                            Toast.makeText(getApplicationContext(),response.body().getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        showNoData();
+                        Toast.makeText(getApplicationContext(),"Something went wrong.Please try again.",Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<GenericResponse> call, Throwable t) {
+                    swipeRefreshLayout.setRefreshing(false);
+                    showNoInternet();
+                    t.printStackTrace();
+                    Toast.makeText(getApplicationContext(),"Something went wrong.Please try again.",Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+            swipeRefreshLayout.setRefreshing(false);
+            showNoInternet();
+        }
+    }
+
 }

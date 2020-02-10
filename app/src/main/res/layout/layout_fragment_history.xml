@@ -65,11 +65,11 @@
                 android:paddingBottom="2dp"
                 />
             <TextView
-                android:id="@+id/auc_history_status"
+                android:id="@+id/auc_history_winner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="SOLD"
+                android:text="Winner: "
                 android:textSize="16sp"/>
         </LinearLayout>
 
